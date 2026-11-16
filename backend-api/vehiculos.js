@@ -1,22 +1,28 @@
 import express from "express";
 import { db } from "./db.js";
+
+import { validarFiltrosVehiculos } from "./validaciones/validarFiltros.js";
+import { validarVehiculo } from "./validaciones/validarParametros.js";
 import {
-  validarAutenticacion,
+  validarId,
+  verificarValidaciones,
+} from "./validaciones/validaciones.js";
+/*import {
+  
   validarFiltrosVehiculos,
  
   validarId,
   validarVehiculo,
   verificarValidaciones,
-} from "./validaciones.js";
+} from "./validaciones.js"; */
 
 const router = express.Router();
 
 // GET para entregar listado de vehículos
 router.get(
   "/",
-  validarAutenticacion,
+  //validarAutenticacion,
   validarFiltrosVehiculos,
-  validarVehiculo,
   verificarValidaciones,
   async (req, res) => {
     const filtros = [];
@@ -58,24 +64,37 @@ router.get(
     }
 
     if (capacidadMin !== undefined) {
-      filtros.push("v.capacidad_carga >= ?");
+      filtros.push("v.capacidadCarga >= ?");
       parametros.push(Number(capacidadMin));
     }
 
     if (capacidadMax !== undefined) {
-      filtros.push("v.capacidad_carga <= ?");
+      filtros.push("v.capacidadCarga <= ?");
       parametros.push(Number(capacidadMax));
     }
 
     let sql =
-      "SELECT v.id, v.marca, v.modelo, v.patente, v.año, v.capacidad_carga " +
+      "SELECT v.id, v.marca, v.modelo, v.patente, v.año, v.capacidadCarga " +
       "FROM tablavehiculos v";
 
     if (filtros.length > 0) {
       sql += " WHERE " + filtros.join(" AND ");
     }
 
+
+
+    console.log("FILTROS:", filtros);
+console.log("PARAMETROS:", parametros);
+console.log("SQL FINAL:", sql);
+
+
+
     const [vehiculos] = await db.execute(sql, parametros);
+
+console.log("Año mínimo:", añoMin);
+console.log("Año máximo:", añoMax);
+console.log("Capacidad mínima:", capacidadMin);
+console.log("Capacidad máxima:", capacidadMax);
 
     res.send(vehiculos);
   }
@@ -85,14 +104,14 @@ router.get(
 // GET para entregar detalle de vehículo
 router.get(
   "/:id",
-  validarAutenticacion,
+  //validarAutenticacion,
   validarId,
   verificarValidaciones,
   async (req, res) => {
     const id = Number(req.params.id);
 
     const sql =
-      "SELECT v.id, v.marca, v.modelo, v.patente, v.anio, v.capacidad_carga " +
+      "SELECT v.id, v.marca, v.modelo, v.patente, v.año, v.capacidadCarga " +
       "FROM tablavehiculos v " +
       "WHERE v.id = ?";
 
@@ -109,11 +128,11 @@ router.get(
 // POST para crear vehículo
 router.post(
   "/",
-  validarAutenticacion,
+  //validarAutenticacion,
   validarVehiculo,
   verificarValidaciones,
   async (req, res) => {
-    const { marca, modelo, patente, año, capacidad_carga } = req.body;
+    const { marca, modelo, patente, año, capacidadCarga } = req.body;
 
     const [result] = await db.execute(
       "INSERT INTO tablavehiculos (marca, modelo, patente, año, capacidadCarga) VALUES (?, ?, ?, ?, ?)",
@@ -126,8 +145,63 @@ router.post(
       modelo,
       patente,
       año,
-      capacidad_carga,
+      capacidadCarga,
     });
+  },
+);
+
+
+// PUT para modificar vehículo
+router.put(
+  "/:id",
+  //validarAutenticacion,
+  validarId,
+  validarVehiculo,
+  verificarValidaciones,
+  async (req, res) => {
+    const id = Number(req.params.id);
+
+    const { marca, modelo, patente, año, capacidadCarga } = req.body;
+
+    const [result] = await db.execute(
+      "UPDATE tablavehiculos SET marca = ?, modelo = ?, patente = ?, año = ?, capacidadCarga = ? WHERE id = ?",
+      [marca, modelo, patente, año, capacidadCarga, id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Vehículo no encontrado");
+    }
+
+    res.send({
+      id,
+      marca,
+      modelo,
+      patente,
+      año,
+      capacidadCarga,
+    });
+  },
+);
+
+// DELETE para eliminar vehículo
+router.delete(
+  "/:id",
+  //validarAutenticacion,
+  validarId,
+  verificarValidaciones,
+  async (req, res) => {
+    const id = Number(req.params.id);
+
+    const [result] = await db.execute(
+      "DELETE FROM tablavehiculos WHERE id = ?",
+      [id],
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).send("Vehículo no encontrado");
+    }
+
+    res.send("Vehículo eliminado correctamente");
   },
 );
 

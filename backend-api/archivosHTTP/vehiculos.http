@@ -1,0 +1,65 @@
+@url=http://localhost:3000
+
+###lista de vehiculos
+
+GET {{url}}/vehiculos
+
+### VEHICULO ID
+GET {{url}}/vehiculos/1
+
+### MODELO
+GET {{url}}/vehiculos?modelo=Ranger
+
+### PATENTE
+GET {{url}}/vehiculos?patente=OPQ159
+
+### AÑO MINIMO
+GET {{url}}/vehiculos?añoMin=2010
+
+### AÑO MAXIMO
+GET {{url}}/vehiculos?añoMax=2000
+
+### CAPACIDAD MINIMA
+GET {{url}}/vehiculos?capacidadMin=700
+
+### CAPACIDAD MAXIMA
+GET {{url}}/vehiculos?capacidadMax=500
+
+### COMBINAR FILTROS
+GET {{url}}/vehiculos?modelo=Ranger&patente=OPQ159&añoMin=1990&añoMax=2017&capacidadMin=500&capacidadMax=1000
+
+
+
+### crear vehiculo
+POST {{url}}/vehiculos
+Content-Type: application/json
+
+
+{
+    "marca":"Renault",
+    "modelo":"Trueno",
+    "año":2017,
+    "capacidadCarga":600,
+
+    "patente":"opq159"
+
+    
+}
+
+
+### ACTUALIZAR VEHICULO POR ID
+PUT {{url}}/vehiculos/1
+Content-Type: application/json
+
+{
+    "marca": "Ford",
+    "modelo": "Ranger",
+    "patente": "ABC123",
+    "año": 2018,
+    "capacidadCarga": 1000
+}
+
+### ELIMINAR VEHICULO POR ID
+DELETE {{url}}/vehiculos/1
+
+

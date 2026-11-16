@@ -1,0 +1,43 @@
+@url=http://localhost:3000
+
+###lista de vehiculos
+
+GET {{url}}/vehiculos
+
+###
+
+GET {{url}}/vehiculos/2
+
+###
+GET {{url}}/vehiculos?marca=a
+
+
+###
+GET {{url}}/vehiculos?modelo=a
+
+
+###
+GET {{url}}/vehiculos?patente=a
+
+@token = {{login.response.body.token}}
+
+### crear vehiculo
+POST {{url}}/vehiculos
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "marca":"ford",
+    "modelo":"ranger",
+    "año":2006,
+    "capacidad_carga":500.0,
+
+    "patente":"sfd448"
+
+    
+}
+
+
+
+
+

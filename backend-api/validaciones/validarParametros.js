@@ -61,11 +61,11 @@ export const validarConductor = [
     .isLength({ max: 50 })
     .withMessage("El apellido no puede superar los 50 caracteres"),
 
-  body("numeroDocumento")
+  body("documento")
     .isInt({ min: 1 })
     .withMessage("El numero de documento debe ser un entero positivo"),
 
-  body("numeroLicencia")
+  body("licencia")
     .isString()
     .withMessage("El numero de licencia debe ser un texto")
     .trim()
@@ -74,11 +74,11 @@ export const validarConductor = [
     .isLength({ max: 30 })
     .withMessage("El numero de licencia no puede superar los 30 caracteres"),
 
-  body("fechaAltaLicencia")
+  body("altaLicencia")
     .isISO8601()
     .withMessage("La fecha de alta de licencia debe tener un formato de fecha valido"),
 
-  body("fechaVencimientoLicencia")
+  body("vencimientoLicencia")
     .isISO8601()
     .withMessage("La fecha de vencimiento de licencia debe tener un formato de fecha valido"),
 ];

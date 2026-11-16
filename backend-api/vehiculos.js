@@ -7,18 +7,11 @@ import {
   validarId,
   verificarValidaciones,
 } from "./validaciones/validaciones.js";
-/*import {
-  
-  validarFiltrosVehiculos,
- 
-  validarId,
-  validarVehiculo,
-  verificarValidaciones,
-} from "./validaciones.js"; */
+
 
 const router = express.Router();
 
-// GET para entregar listado de vehículos
+// listado de vehículos
 router.get(
   "/",
   //validarAutenticacion,
@@ -83,18 +76,13 @@ router.get(
 
 
 
-    console.log("FILTROS:", filtros);
-console.log("PARAMETROS:", parametros);
-console.log("SQL FINAL:", sql);
+ 
 
 
 
     const [vehiculos] = await db.execute(sql, parametros);
 
-console.log("Año mínimo:", añoMin);
-console.log("Año máximo:", añoMax);
-console.log("Capacidad mínima:", capacidadMin);
-console.log("Capacidad máxima:", capacidadMax);
+
 
     res.send(vehiculos);
   }

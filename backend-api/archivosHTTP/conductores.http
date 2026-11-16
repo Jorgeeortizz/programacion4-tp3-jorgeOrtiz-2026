@@ -1,0 +1,51 @@
+@url=http://localhost:3000
+
+### GET: listar conductores
+GET {{url}}/conductores
+
+### GET: buscar conductor por ID
+GET {{url}}/conductores/1
+
+### GET: filtrar por nombre
+GET {{url}}/conductores?nombre=Juan
+
+### GET: filtrar por apellido
+GET {{url}}/conductores?apellido=Perez
+
+### GET: filtrar por vencimiento mínimo
+GET {{url}}/conductores?vencimientoMin=2026-01-01
+
+### GET: filtrar por vencimiento máximo
+GET {{url}}/conductores?vencimientoMax=2027-12-31
+
+### GET: filtrar por rango de vencimiento
+GET {{url}}/conductores?vencimientoMin=2026-01-01&vencimientoMax=2027-12-31
+
+### POST: crear conductor
+POST {{url}}/conductores
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Perez",
+  "documento": 30123456,
+  "licencia": "LIC-123456",
+  "altaLicencia": "2022-05-10",
+  "vencimientoLicencia": "2027-05-10"
+}
+
+### PUT: modificar conductor
+PUT {{url}}/conductores/1
+Content-Type: application/json
+
+{
+  "nombre": "Juan",
+  "apellido": "Gomez",
+  "documento": 30123456,
+  "licencia": "LIC123456",
+  "altaLicencia": "2022-05-10",
+  "vencimientoLicencia": "2028-05-10"
+}
+
+### DELETE: eliminar conductor
+DELETE {{url}}/conductores/1

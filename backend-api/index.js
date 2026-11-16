@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import {conectarDB} from "./db.js";
-
+import conductoresRouter from "./conductores.js"
 import vehiculosRouter from "./vehiculos.js";
 
 conectarDB();
@@ -19,6 +19,7 @@ app.get("/", (req, res) => {
 
 
 app.use("/vehiculos", vehiculosRouter);
+app.use("/conductores", conductoresRouter);
 
 app.listen(port, ()=>{
     console.log(`puerto ${port} funcionando`)

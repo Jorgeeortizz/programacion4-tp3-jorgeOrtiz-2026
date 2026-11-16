@@ -10,16 +10,16 @@ export const validarFiltrosVehiculos = [
     .isString()
     .withMessage("La marca debe ser un texto")
     .trim()
-    .isLength({ min: 1, max: 50 })
-    .withMessage("La marca debe tener entre 1 y 50 caracteres"),
+    .isLength({ min: 1, max: 45 })
+    .withMessage("La marca debe tener entre 1 y 45 caracteres"),
 
   query("modelo")
     .optional()
     .isString()
     .withMessage("El modelo debe ser un texto")
     .trim()
-    .isLength({ min: 1, max: 50 })
-    .withMessage("El modelo debe tener entre 1 y 50 caracteres"),
+    .isLength({ min: 1, max: 45 })
+    .withMessage("El modelo debe tener entre 1 y 45 caracteres"),
 
   query("patente")
     .optional()
@@ -75,7 +75,6 @@ export const validarFiltrosVehiculos = [
 
 
 
-// filtros de conductores
 export const validarFiltrosConductores = [
   query("nombre")
     .optional()
@@ -93,24 +92,27 @@ export const validarFiltrosConductores = [
     .isLength({ min: 1, max: 50 })
     .withMessage("El apellido debe tener entre 1 y 50 caracteres"),
 
-  query("viajesMin")
+  query("vencimientoMin")
     .optional()
-    .isInt({ min: 0 })
-    .withMessage("La cantidad minima de viajes debe ser un numero entero igual o mayor a 0"),
+    .isISO8601()
+    .withMessage("La fecha mínima de vencimiento debe tener un formato válido"),
 
-  query("viajesMax")
+  query("vencimientoMax")
     .optional()
-    .isInt({ min: 0 })
-    .withMessage("La cantidad maxima de viajes debe ser un numero entero igual o mayor a 0"),
+    .isISO8601()
+    .withMessage("La fecha máxima de vencimiento debe tener un formato válido"),
 
-  query("viajesMax").custom((value, { req }) => {
+  query("vencimientoMax").custom((value, { req }) => {
     if (
       value !== undefined &&
-      req.query.viajesMin !== undefined &&
-      Number(value) < Number(req.query.viajesMin)
+      req.query.vencimientoMin !== undefined &&
+      new Date(value) < new Date(req.query.vencimientoMin)
     ) {
-      throw new Error("viajesMax no puede ser menor que viajesMin");
+      throw new Error(
+        "vencimientoMax no puede ser anterior a vencimientoMin"
+      );
     }
+
     return true;
   }),
 ];

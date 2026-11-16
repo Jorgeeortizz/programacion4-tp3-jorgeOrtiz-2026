@@ -58,8 +58,8 @@ export const validarConductor = [
     .trim()
     .notEmpty()
     .withMessage("El apellido es obligatorio")
-    .isLength({ max: 50 })
-    .withMessage("El apellido no puede superar los 50 caracteres"),
+    .isLength({ max: 45 })
+    .withMessage("El apellido no puede superar los 45 caracteres"),
 
   body("documento")
     .isInt({ min: 1 })

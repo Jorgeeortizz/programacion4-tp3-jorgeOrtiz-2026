@@ -13,7 +13,7 @@ import {
 const router = express.Router();
 
 
-// GET para entregar listado de conductores
+// listado conductores
 router.get(
   "/",
   //validarAutenticacion,
@@ -69,7 +69,7 @@ router.get(
 
 
 
-
+// conductor id
 router.get(
   "/:id",
   //validarAutenticacion,
@@ -186,7 +186,7 @@ router.put(
   }
 );
 
-// DELETE: eliminar conductor
+// eliminar
 router.delete(
   "/:id",
   //validarAutenticacion,

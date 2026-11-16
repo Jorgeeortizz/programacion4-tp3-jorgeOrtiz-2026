@@ -75,22 +75,26 @@ export const validarFiltrosVehiculos = [
 
 
 
+// filtros de conductores
 export const validarFiltrosConductores = [
   query("nombre")
     .optional()
     .isString()
     .withMessage("El nombre debe ser un texto")
     .trim()
-    .isLength({ min: 1, max: 50 })
-    .withMessage("El nombre debe tener entre 1 y 50 caracteres"),
+    .isLength({ min: 1, max: 45 })
+    .withMessage("El nombre debe tener entre 1 y 45 caracteres"),
 
   query("apellido")
     .optional()
     .isString()
     .withMessage("El apellido debe ser un texto")
     .trim()
-    .isLength({ min: 1, max: 50 })
-    .withMessage("El apellido debe tener entre 1 y 50 caracteres"),
+    .isLength({ min: 1, max: 45 })
+    .withMessage("El apellido debe tener entre 1 y 45 caracteres"),
+
+   
+    
 
   query("vencimientoMin")
     .optional()
@@ -113,6 +117,28 @@ export const validarFiltrosConductores = [
       );
     }
 
+    
+
+    return true;
+  }),
+];
+
+
+export const validarFiltrosViajes = [
+  query("vehiculo_id").optional().isInt({ min: 1 }).withMessage("vehiculo_id inválido"),
+  query("conductor_id").optional().isInt({ min: 1 }).withMessage("conductor_id inválido"),
+  query("desde").optional().isISO8601().withMessage("'desde' inválido"),
+  query("hasta").optional().isISO8601().withMessage("'hasta' inválido"),
+];
+
+
+export const validarFiltrosKilometros = [
+  query("vehiculo_id").optional().isInt({ min: 1 }).withMessage("vehiculo_id inválido"),
+  query("conductor_id").optional().isInt({ min: 1 }).withMessage("conductor_id inválido"),
+  query().custom((_valor, { req }) => {
+    if (!req.query.vehiculo_id && !req.query.conductor_id) {
+      throw new Error("Indicá vehiculo_id o conductor_id");
+    }
     return true;
   }),
 ];

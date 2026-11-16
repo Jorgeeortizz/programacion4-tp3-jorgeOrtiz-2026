@@ -3,13 +3,21 @@ import { db } from "./db.js";
 
 import { validarFiltrosViajes, validarFiltrosKilometros } from "./validaciones/validarFiltros.js";
 
-import { validarviajes } from "./validaciones/validarParametros.js";
+import { validarViaje } from "./validaciones/validarParametros.js";
 
 
 
 import { validarId, verificarValidaciones} from "./validaciones/validaciones.js";
 
 const router = express.Router();
+
+const sql_Viajes = "SELECT vjs.id, vjs.vehiculo_id, vjs.conductor_id, vjs.fechaSalida, vjs.fechaLlegada, " +
+  "vjs.origen, vjs.destino, vjs.kilometros, vjs.observaciones, " +
+  "v.patente, v.marca, v.modelo, " +
+  "c.nombre AS conductor_nombre, c.apellido AS conductor_apellido " +
+  "FROM tablaviajes vjs " +
+  "JOIN tablavehiculos v ON v.id = vjs.vehiculo_id " +
+  "JOIN tablaconductor c ON c.id = vjs.conductor_id";
 
 //verificar vehiculo, conductor, licencia vigente 
 async function Referencias (vehiculo_id, conductor_id, fechaSalida) {
@@ -46,7 +54,7 @@ router.get("/", //validarAutenticacion,
     validarFiltrosViajes, verificarValidaciones, async(req, res ) =>{
 
     const filtros=[];
-    const parametros [];
+    const parametros= [];
 
         const {vehiculo_id, conductor_id, desde, hasta} = req.query;
 
@@ -65,31 +73,25 @@ router.get("/", //validarAutenticacion,
 
         if (desde) {
 
-        filtros.push("vjs.fecha_salida >= ?");
+        filtros.push("vjs.fechaSalida >= ?");
         parametros.push(desde);
         }
 
             
         if (hasta) {
-        filtros.push("vjs.fecha_salida <= ?");
+        filtros.push("vjs.fechaSalida <= ?");
         parametros.push(hasta);
              }      
              
 
-    let sql =  "SELECT vjs.id, vjs.vehiculo_id, vjs.conductor_id, vjs.fechaSalida, vjs.fechaLlegada, " +
-  "vjs.origen, vjs.destino, vjs.kilometros, vjs.observaciones, " +
-  "v.patente, v.marca, v.modelo, " +
-  "c.nombre AS conductor_nombre, c.apellido AS conductor_apellido " +
-  "FROM tablaviajes vjs " +
-  "JOIN tablavehiculos v ON v.id = vj.vehiculo_id " +
-  "JOIN tablaconductor c ON c.id = vj.conductor_id";
+    let sql = sql_Viajes;
             
 
 if (filtros.length > 0) {
       sql += " WHERE " + filtros.join(" AND ");
     }
 
-sql += " ORDER BY vj.fecha_salida DESC";
+sql += " ORDER BY vjs.fechaSalida DESC";
 
     const [viajes] = await db.execute(sql, parametros);
 
@@ -139,7 +141,7 @@ router.get("/:id",//validarAutenticacion,
     
     const id = Number(req.params.id);
 
-    const [viajes] = await db.execute(SELECT_VIAJES + " WHERE vjs.id = ?", [id]);
+    const [viajes] = await db.execute(sql_Viajes + " WHERE vjs.id = ?", [id]);
 
     if (viajes.length === 0) {
       return res.status(404).json({ error: "Viaje no encontrado" });
@@ -155,7 +157,7 @@ validarViaje,verificarValidaciones,async (req, res) => {
     
     const { vehiculo_id,conductor_id,fechaSalida,fechaLlegada,origen,destino,kilometros,observaciones, } = req.body;
 
-    const error = await validarReferencias(
+    const error = await Referencias(
       vehiculo_id,conductor_id,fechaSalida, fechaLlegada);
 
     if (error) {
@@ -163,7 +165,7 @@ validarViaje,verificarValidaciones,async (req, res) => {
     }
 
     const [result] = await db.execute(
-      "INSERT INTO viajes " +
+      "INSERT INTO tablaviajes " +
         "(vehiculo_id, conductor_id, fechaSalida, fechaLlegada, origen, destino, kilometros, observaciones) " +
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
 
@@ -184,14 +186,14 @@ router.put("/:id",//validarAutenticacion,
 
     const {vehiculo_id,conductor_id,fechaSalida,fechaLlegada,origen,destino,kilometros,observaciones,} = req.body;
 
-    const error = await validarReferencias(vehiculo_id,conductor_id,fechaSalida);
+    const error = await Referencias(vehiculo_id,conductor_id,fechaSalida);
 
     if (error) {
       return res.status(400).json({ error });
     }
 
     const [result] = await db.execute(
-      "UPDATE viajes SET vehiculo_id = ?, conductor_id = ?, fechaSalida = ?, fechaLlegada = ?, " +
+      "UPDATE tablaviajes SET vehiculo_id = ?, conductor_id = ?, fechaSalida = ?, fechaLlegada = ?, " +
         "origen = ?, destino = ?, kilometros = ?, observaciones = ? WHERE id = ?",
       [vehiculo_id,conductor_id,fechaSalida,fechaLlegada,origen,destino,kilometros,observaciones ?? null,id,],
     

@@ -1,12 +1,12 @@
 import { param, validationResult } from "express-validator";
-//import passport from "passport";
+import passport from "passport";
 
 // Validacion de autenticacion
-/*
+
 export const validarAutenticacion = passport.authenticate("jwt", {
   session: false,
 }); 
-*/
+
 
 
 // Validacion de ID

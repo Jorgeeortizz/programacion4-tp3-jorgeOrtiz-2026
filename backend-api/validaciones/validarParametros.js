@@ -11,7 +11,7 @@ export const validarVehiculo = [
     .trim()
     .notEmpty()
     .withMessage("La marca es obligatoria")
-    .isLength({ max: 50 })
+    .isLength({ max: 45 })
     .withMessage("La marca no puede superar los 50 caracteres"),
 
   body("modelo")
@@ -20,7 +20,7 @@ export const validarVehiculo = [
     .trim()
     .notEmpty()
     .withMessage("El modelo es obligatorio")
-    .isLength({ max: 50 })
+    .isLength({ max: 45 })
     .withMessage("El modelo no puede superar los 50 caracteres"),
 
   body("patente")
@@ -49,7 +49,7 @@ export const validarConductor = [
     .trim()
     .notEmpty()
     .withMessage("El nombre es obligatorio")
-    .isLength({ max: 50 })
+    .isLength({ max: 45 })
     .withMessage("El nombre no puede superar los 50 caracteres"),
 
   body("apellido")
@@ -141,25 +141,46 @@ export const validarViaje = [
 ];
 
 
-// Validacion de usuario
-export const validarUsuario = [
+// Validacion de registro de usuario
+export const validarRegistro = [
   body("nombre")
     .isString()
     .withMessage("El nombre debe ser un texto")
+    .bail()
     .trim()
     .notEmpty()
     .withMessage("El nombre es obligatorio")
-    .isLength({ max: 50 })
+    .bail()
+    .isLength({ max: 45 })
     .withMessage("El nombre no puede superar los 50 caracteres"),
 
   body("email")
     .isEmail()
     .withMessage("Debe ingresar un email valido")
+    .bail()
     .normalizeEmail(),
 
-  body("contrasena")
+  body("password")
     .isString()
     .withMessage("La contraseña debe ser un texto")
+    .bail()
     .isLength({ min: 8 })
     .withMessage("La contraseña debe tener al menos 8 caracteres"),
+];
+
+
+// Validacion de inicio de sesion
+export const validarLogin = [
+  body("email")
+    .isEmail()
+    .withMessage("Debe ingresar un email valido")
+    .bail()
+    .normalizeEmail(),
+
+  body("password")
+    .isString()
+    .withMessage("La contraseña debe ser un texto")
+    .bail()
+    .notEmpty()
+    .withMessage("La contraseña es obligatoria"),
 ];

@@ -14,21 +14,12 @@ const router = express.Router();
 
 
 // listado conductores
-router.get(
-  "/",
-  //validarAutenticacion,
-  validarFiltrosConductores,
-  verificarValidaciones,
-  async (req, res) => {
+router.get( "/", //validarAutenticacion,
+  validarFiltrosConductores,verificarValidaciones, async (req, res) => {
     const filtros = [];
     const parametros = [];
 
-    const {
-      nombre,
-      apellido,
-      vencimientoMin,
-      vencimientoMax,
-    } = req.query;
+    const {nombre,apellido,vencimientoMin,vencimientoMax } = req.query;
 
     if (nombre) {
       filtros.push("c.nombre LIKE ?");

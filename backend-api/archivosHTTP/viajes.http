@@ -1,82 +1,84 @@
 
-@host = http://localhost:3000
+@url = http://localhost:3000
 
 ### listado viajes
-GET {{host}}/viajes
+GET {{url}}/viajes
 
 ### viajes de vehiculo
-GET {{host}}/viajes?vehiculo_id=1
+GET {{url}}/viajes?vehiculo_id=1
 
 ### viajes de conductor
-GET {{host}}/viajes?conductor_id=1
+GET {{url}}/viajes?conductor_id=1
 
 ### fechas
-GET {{host}}/viajes?desde=2026-01-01&hasta=2026-12-31
+GET {{url}}/viajes?desde=2026-01-01&hasta=2026-12-31
 
 ### viajes vehiculo, conductor
-GET {{host}}/viajes?vehiculo_id=1&conductor_id=1
+GET {{url}}/viajes?vehiculo_id=1&conductor_id=1
 
 ### suma km por vehiculo
-GET {{host}}/viajes/kilometros?vehiculo_id=1
+GET {{url}}/viajes/kilometros?vehiculo_id=1
 
 ### suma km conductor
-GET {{host}}/viajes/kilometros?conductor_id=1
+GET {{url}}/viajes/kilometros?conductor_id=1
 
 ### error km sin filtro
-GET {{host}}/viajes/kilometros
+GET {{url}}/viajes/kilometros
 
 ### km vehiculo conductor
-GET {{host}}/viajes/kilometros?vehiculo_id=1&conductor_id=1
+GET {{url}}/viajes/kilometros?vehiculo_id=1&conductor_id=1
 
 ### viaje id 
-GET {{host}}/viajes/1
+GET {{url}}/viajes/1
 
 ### agregar viaje
-POST {{host}}/viajes
+POST {{url}}/viajes
+Content-Type: application/json
+
+{
+  
+  "vehiculo_id": 1,
+  "conductor_id": 2,
+  "fechaSalida": "2026-11-14T06:00:00",
+  "fechaLlegada": "2026-11-14T17:30:00",
+  "origen": "La Rioja",
+  "destino": "Mendoza",
+  "kilometros": 620,
+  "observaciones": "Ruta despejada, sin inconvenientes"
+
+}
+
+### error por llegada
+POST {{url}}/viajes
 Content-Type: application/json
 
 {
   "vehiculo_id": 1,
   "conductor_id": 1,
   "fechaSalida": "2026-11-10T08:00:00",
-  "fechaLlegada": "2026-11-10T18:30:00",
+  "fechaLlegada": "2026-11-10T13:00:00",
   "origen": "La Rioja",
-  "destino": "Cordoba",
-  "kilometros": 450,
-  "observaciones": "Entrega sin novedades"
-}
-
-### error por llegada
-POST {{host}}/viajes
-Content-Type: application/json
-
-{
-  "vehiculo_id": 1,
-  "conductor_id": 1,
-  "fechaSalida": "2026-11-10T18:00:00",
-  "fechaLlegada": "2026-11-10T08:00:00",
-  "origen": "La Rioja",
-  "destino": "Cordoba",
-  "kilometros": 450,
-  "observaciones": "Prueba de validacion"
+  "destino": "San Luis",
+  "kilometros": 500,
+  "observaciones": "Nublado, neblina "
 }
 
 ### error por vehiculo
-POST {{host}}/viajes
+POST {{url}}/viajes
 Content-Type: application/json
 
 {
   "vehiculo_id": 9999,
   "conductor_id": 1,
   "fechaSalida": "2026-11-10T08:00:00",
-  "fechaLlegada": "2026-11-10T18:30:00",
+  "fechaLlegada": "2026-11-10T13:30:00",
   "origen": "La Rioja",
-  "destino": "Cordoba",
-  "kilometros": 450
+  "destino": "San luis",
+  "kilometros": 500
 }
 
 ### modificar viaje
-PUT {{host}}/viajes/1
+PUT {{url}}/viajes/1
 Content-Type: application/json
 
 {
@@ -85,10 +87,10 @@ Content-Type: application/json
   "fechaSalida": "2026-11-10T08:00:00",
   "fechaLlegada": "2026-11-10T19:00:00",
   "origen": "La Rioja",
-  "destino": "Cordoba",
-  "kilometros": 455,
-  "observaciones": "Demora por transito"
+  "destino": "San Luis",
+  "kilometros": 556.50,
+  "observaciones": "Tardanza por temporal"
 }
 
 ### eliminar
-DELETE {{host}}/viajes/1
+DELETE {{url}}/viajes/1

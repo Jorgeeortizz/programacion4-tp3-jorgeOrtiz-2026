@@ -7,13 +7,13 @@ GET {{url}}/conductores
 GET {{url}}/conductores/1
 
 ### GET: filtrar por nombre
-GET {{url}}/conductores?nombre=Juan
+GET {{url}}/conductores?nombre=raul
 
 ### GET: filtrar por apellido
-GET {{url}}/conductores?apellido=Perez
+GET {{url}}/conductores?apellido=castañares
 
 ### GET: filtrar por vencimiento mínimo
-GET {{url}}/conductores?vencimientoMin=2026-01-01
+GET {{url}}/conductores?vencimientoMin=2020-01-01
 
 ### GET: filtrar por vencimiento máximo
 GET {{url}}/conductores?vencimientoMax=2027-12-31
@@ -26,12 +26,12 @@ POST {{url}}/conductores
 Content-Type: application/json
 
 {
-  "nombre": "Juan",
-  "apellido": "Perez",
-  "documento": 30123456,
-  "licencia": "LIC-123456",
-  "altaLicencia": "2022-05-10",
-  "vencimientoLicencia": "2027-05-10"
+  "nombre": "Raul",
+  "apellido": "Guzman",
+  "documento": 36719388,
+  "licencia": "LIC-147",
+  "altaLicencia": "2024-10-19",
+  "vencimientoLicencia": "2029-05-12"
 }
 
 ### PUT: modificar conductor
@@ -39,10 +39,10 @@ PUT {{url}}/conductores/1
 Content-Type: application/json
 
 {
-  "nombre": "Juan",
-  "apellido": "Gomez",
-  "documento": 30123456,
-  "licencia": "LIC123456",
+  "nombre": "Jose",
+  "apellido": "Castañares",
+  "documento": 32123456,
+  "licencia": "LIC-123456",
   "altaLicencia": "2022-05-10",
   "vencimientoLicencia": "2028-05-10"
 }

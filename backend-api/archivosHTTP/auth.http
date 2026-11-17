@@ -23,6 +23,7 @@ Content-Type: application/json
 
 ### CONSULTAR VEHICULOS SIN TOKEN
 GET {{url}}/vehiculos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzk0ODcxNzA2LCJleHAiOjE3OTQ4ODYxMDZ9.C8nxlX1f9yUHNf00CWvAZJ_T6yxG-9RUExNatNiWq30
 
 ### CONSULTAR VEHICULOS CON TOKEN
 GET {{url}}/vehiculos

@@ -7,7 +7,7 @@ import conductoresRouter from "./conductores.js"
 import vehiculosRouter from "./vehiculos.js";
 import viajesRouter from "./viajes.js"
 import passport from "passport";
-//import usuariosRouter from "./usuarios.js";
+
 
 await conectarDB();
 authConfig();
@@ -32,7 +32,7 @@ app.use("/vehiculos",validarAutenticacion, vehiculosRouter);
 app.use("/conductores",validarAutenticacion, conductoresRouter);
 app.use("/viajes", validarAutenticacion,viajesRouter);
 app.use("/auth", authRouter);
-//app.use("/usuarios", validarAutenticacion, usuariosRouter);
+
 
 app.listen(port, ()=>{
     console.log(`puerto ${port} funcionando`)

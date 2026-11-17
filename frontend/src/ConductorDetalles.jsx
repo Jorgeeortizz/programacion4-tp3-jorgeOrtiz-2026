@@ -3,30 +3,37 @@ import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "./Auth";
 import { leerError } from "./errores";
-import { VehiculoForm } from "./VehiculoForm";
+import { ConductorForm } from "./ConductorForm";
 
-export function VehiculoDetalles() {
+
+
+export function ConductorDetalles() {
   const { id } = useParams();
   const { fetchAuth } = useAuth();
   const navigate = useNavigate();
 
-  const [vehiculo, setVehiculo] = useState(null);
+  const [conductor, setConductor] = useState(null);
   const [error, setError] = useState(null);
+  const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     let cancelado = false;
 
+    setCargando(true);
+    setError(null);
 
-    // variable de entorno como buenas practicas
-    fetchAuth(`${import.meta.env.VITE_API_URL}/vehiculos/${id}`)
+    fetchAuth(`/conductores/${id}`)
       .then(async (response) => {
         if (!response.ok) {
           throw new Error(await leerError(response));
         }
+
         return response.json();
       })
       .then((datos) => {
-        if (!cancelado) setVehiculo(datos);
+        if (!cancelado) {
+          setConductor(datos);
+        }
       })
       .catch((err) => {
         if (cancelado) return;
@@ -36,6 +43,9 @@ export function VehiculoDetalles() {
             ? "No se pudo conectar con el servidor"
             : err.message
         );
+      })
+      .finally(() => {
+        if (!cancelado) setCargando(false);
       });
 
     return () => {
@@ -46,7 +56,7 @@ export function VehiculoDetalles() {
   const guardar = async (datos) => {
     try {
       const response = await fetchAuth(
-        `${import.meta.env.VITE_API_URL}/vehiculos/${id}`,
+        `/conductores/${id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -61,7 +71,7 @@ export function VehiculoDetalles() {
         };
       }
 
-      navigate("/vehiculos");
+      navigate("/conductores");
       return { ok: true };
 
     } catch {
@@ -76,26 +86,27 @@ export function VehiculoDetalles() {
     return (
       <>
         <p className="error">{error}</p>
-        <Link to="/vehiculos">Volver al listado</Link>
+        <Link to="/conductores">Volver al listado</Link>
       </>
     );
   }
 
-  if (!vehiculo) {
+  if (cargando || !conductor) {
     return <p>Cargando...</p>;
   }
 
   return (
     <>
-      <h2>Modificar vehículo</h2>
+      <h2>Modificar conductor</h2>
 
-      <VehiculoForm
+      <ConductorForm
         inicial={{
-          marca: vehiculo.marca,
-          modelo: vehiculo.modelo,
-          patente: vehiculo.patente,
-          año: vehiculo.año,
-          capacidadCarga: vehiculo.capacidadCarga,
+          nombre: conductor.nombre,
+          apellido: conductor.apellido,
+          documento: conductor.documento,
+          licencia: conductor.licencia,
+          altaLicencia: conductor.altaLicencia,
+          vencimientoLicencia: conductor.vencimientoLicencia,
         }}
         onGuardar={guardar}
         textoBoton="Guardar cambios"

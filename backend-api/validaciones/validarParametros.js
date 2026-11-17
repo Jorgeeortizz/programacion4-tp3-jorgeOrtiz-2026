@@ -42,46 +42,42 @@ export const validarVehiculo = [
 ];
 
 // Validacion de conductor
+
 export const validarConductor = [
   body("nombre")
-    .isString()
-    .withMessage("El nombre debe ser un texto")
     .trim()
-    .notEmpty()
-    .withMessage("El nombre es obligatorio")
-    .isLength({ max: 45 })
-    .withMessage("El nombre no puede superar los 50 caracteres"),
+    .matches(/^[\p{L} '-]{1,50}$/u)
+    .withMessage("El nombre es obligatorio: solo letras, hasta 50 caracteres"),
 
   body("apellido")
-    .isString()
-    .withMessage("El apellido debe ser un texto")
     .trim()
-    .notEmpty()
-    .withMessage("El apellido es obligatorio")
-    .isLength({ max: 45 })
-    .withMessage("El apellido no puede superar los 45 caracteres"),
+    .matches(/^[\p{L} '-]{1,50}$/u)
+    .withMessage("El apellido es obligatorio: solo letras, hasta 50 caracteres"),
 
   body("documento")
-    .isInt({ min: 1 })
-    .withMessage("El numero de documento debe ser un entero positivo"),
+    .trim()
+    .matches(/^\d{7,8}$/)
+    .withMessage("El número de documento debe tener 7 u 8 dígitos"),
 
   body("licencia")
-    .isString()
-    .withMessage("El numero de licencia debe ser un texto")
     .trim()
-    .notEmpty()
-    .withMessage("El numero de licencia es obligatorio")
-    .isLength({ max: 30 })
-    .withMessage("El numero de licencia no puede superar los 30 caracteres"),
+    .isAlphanumeric()
+    .isLength({ min: 5, max: 20 })
+    .withMessage("El número de licencia debe ser alfanumérico (5 a 20 caracteres)"),
 
   body("altaLicencia")
-    .isISO8601()
-    .withMessage("La fecha de alta de licencia debe tener un formato de fecha valido"),
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+    .withMessage("La fecha de alta debe tener formato AAAA-MM-DD"),
 
   body("vencimientoLicencia")
-    .isISO8601()
-    .withMessage("La fecha de vencimiento de licencia debe tener un formato de fecha valido"),
+    .isDate({ format: "YYYY-MM-DD", strictMode: true })
+    .withMessage("La fecha de vencimiento debe tener formato AAAA-MM-DD")
+    .custom((vencimiento, { req }) => {
+      return vencimiento > req.body.altaLicencia;
+    })
+    .withMessage("El vencimiento debe ser posterior a la fecha de alta"),
 ];
+
 
 // Validacion de viaje
 export const validarViaje = [

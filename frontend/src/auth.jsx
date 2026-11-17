@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useState } from "react";
 
 // URL base del backend: se define una sola vez
-const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL;
 const TOKEN_KEY = "token";
 const USUARIO_KEY = "usuario";
 

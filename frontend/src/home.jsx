@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "./Auth";
+import { useAuth } from "./Auth.jsx";
 
 export function Home() {
   const { isAuthenticated, nombre } = useAuth();

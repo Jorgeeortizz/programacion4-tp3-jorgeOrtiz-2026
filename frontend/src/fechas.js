@@ -3,7 +3,7 @@
 export function formatearFecha(fecha) {
   if (!fecha) return "";
 
-  return fecha.split("-").reverse().join("/");
+  return fecha.slice(0, 10).split("-").reverse().join("/");
 }
 
 // Fecha actual en formato AAAA-MM-DD (hora local)

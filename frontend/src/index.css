@@ -22,7 +22,7 @@ nav ul {
   list-style: none;
   margin: 0 0 1.5rem;
   padding: 0.5rem;
-  background: #1f3a5f;
+  background: #1d75f2;
   border-radius: 6px;
 }
 
@@ -35,7 +35,7 @@ nav li a {
 }
 
 nav li.active a {
-  background: #3b6ea8;
+  background: #1d75f2;
 }
 
 nav li.usuario {
@@ -75,7 +75,7 @@ button {
 }
 
 button:hover {
-  background: #2f5a8a;
+  background: #1d75f2;
 }
 
 .acciones {
@@ -123,7 +123,7 @@ th {
 }
 
 .enlace-boton:hover {
-  background: #2f5a8a;
+  background: #1d75f2;
 }
 
 .boton-peligro {

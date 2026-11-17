@@ -1,4 +1,5 @@
 
+
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "./Auth";
@@ -15,9 +16,18 @@ export function Vehiculos() {
   // Obtener todos los vehículos
   useEffect(() => {
     let cancelado = false;
-    //utilizo variable de entorno como buenas practicas 
-    fetchAuth(`${import.meta.env.VITE_API_URL}/vehiculos`) 
+
+    console.log(
+      "URL de la API:",
+      `${import.meta.env.VITE_API_URL}/vehiculos`
+    );
+
+    console.log("Iniciando petición GET de vehículos");
+
+    fetchAuth("/vehiculos")
       .then(async (response) => {
+        console.log("Respuesta del servidor:", response.status);
+
         if (!response.ok) {
           throw new Error(await leerError(response));
         }
@@ -27,10 +37,14 @@ export function Vehiculos() {
       .then((datos) => {
         if (cancelado) return;
 
+        console.log("Vehículos recibidos:", datos);
+
         setVehiculos(datos);
         setError(null);
       })
       .catch((err) => {
+        console.error("Error al cargar vehículos:", err);
+
         if (cancelado) return;
 
         setError(
@@ -48,12 +62,10 @@ export function Vehiculos() {
     return () => {
       cancelado = true;
     };
-
   }, [fetchAuth, recarga]);
 
   // Eliminar vehículo
   const eliminar = async (vehiculo) => {
-
     if (
       !window.confirm(
         `¿Eliminar el vehículo ${vehiculo.patente}?`
@@ -63,11 +75,10 @@ export function Vehiculos() {
     }
 
     try {
-
       const response = await fetchAuth(
-        `${import.meta.env.VITE_API_URL}/vehiculos/${vehiculo.id}`,
+        `/vehiculos/${vehiculo.id}`,
         {
-          method: "DELETE"
+          method: "DELETE",
         }
       );
 
@@ -80,7 +91,6 @@ export function Vehiculos() {
       setRecarga((r) => r + 1);
 
     } catch (err) {
-
       setError(
         err instanceof TypeError
           ? "No se pudo conectar con el servidor"
@@ -92,7 +102,6 @@ export function Vehiculos() {
   return (
     <>
       <div className="cabecera">
-
         <h2>Vehículos</h2>
 
         <Link
@@ -101,7 +110,6 @@ export function Vehiculos() {
         >
           Nuevo vehículo
         </Link>
-
       </div>
 
       {error && <p className="error">{error}</p>}
@@ -114,9 +122,7 @@ export function Vehiculos() {
 
       {!cargando && vehiculos.length > 0 && (
         <div className="tabla-contenedor">
-
           <table>
-
             <thead>
               <tr>
                 <th>Patente</th>
@@ -129,11 +135,8 @@ export function Vehiculos() {
             </thead>
 
             <tbody>
-
               {vehiculos.map((v) => (
-
                 <tr key={v.id}>
-
                   <td>{v.patente}</td>
                   <td>{v.marca}</td>
                   <td>{v.modelo}</td>
@@ -141,9 +144,7 @@ export function Vehiculos() {
                   <td>{v.capacidadCarga}</td>
 
                   <td>
-
                     <div className="acciones">
-
                       <Link
                         className="enlace-boton"
                         to={`/vehiculos/${v.id}`}
@@ -157,19 +158,12 @@ export function Vehiculos() {
                       >
                         Eliminar
                       </button>
-
                     </div>
-
                   </td>
-
                 </tr>
-
               ))}
-
             </tbody>
-
           </table>
-
         </div>
       )}
     </>
